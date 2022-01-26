@@ -4,19 +4,7 @@
 
 
 const faker = require('faker');
-
-var os = require('os');
-var fs = require('fs');
-
-
-console.log("Platform: " + os.platform());
-console.log("Architecture: " + os.arch());
-console.log("Memory: " + os.totalmem());
-
-// var myInt = setInterval(function () {
-//     console.log("Tekst ispisan so timer event");
-// }, 500);
-
+const fs = require('fs');
 
 let people = []
 
@@ -35,9 +23,14 @@ for(let i = 0; i<=10; i++){
         car : faker.vehicle.vehicle(),
         bio : faker.lorem.paragraph()
     })
-    fs.writeFile(`./docs/${people[i].name}.json`,JSON.stringify(people[i]),()=>{
-        console.log(people[i].car);
-    });  
+    fs.appendFile(`./docs/users.json`,JSON.stringify(people[i],Symbol()),(err)=>{
+        if(err==true){
+            console.log('Error in writing data in the file')
+        }
+    });
+    // fs.writeFile(`./docs/${people[i].name}.json`,JSON.stringify(people[i]),()=>{
+    //     console.table(people[i]);
+    // });  
 }
 
 

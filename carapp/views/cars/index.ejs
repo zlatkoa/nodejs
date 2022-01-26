@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The car Database</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <a href="/cars/create">Add new car</a>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Consupmtion</th>
+        <th>Number of cylinders:</th>
+        <th>Displacement</th>
+        <th>Horsepower</th>
+        <th>Weight</th>
+        <th>Acceleration</th>
+        <th>Year</th>
+        <th>Origin</th>
+      </tr>
+      <% cars.forEach(car => { %>
+        <tr>
+          <td><%= car.Name %></td>
+          <td><%= car.Miles_per_Gallon %></td>
+          <td><%= car.Cylinders %></td>
+          <td><%= car.Displacement %></td>
+          <td><%= car.Horsepower %></td>
+          <td><%= car.Weight_in_lbs %></td>
+          <td><%= car.Acceleration %></td>
+          <td><%= car.Year %></td>
+          <td><%= car.Origin %></td>
+        </tr>
+      <% }) %>
+    </table>
+  </body>
+</html>
+
+
+

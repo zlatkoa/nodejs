@@ -12,6 +12,13 @@ const coachesRouter = require('./routes/coaches');
 const leaguesRouter = require('./routes/leagues');
 const playersRouter = require('./routes/players');
 
+
+const agentsApiRouter = require('./routes/api/agents');
+const clubsApiRouter = require('./routes/api/clubs');
+const coachesApiRouter = require('./routes/api/coaches');
+const leaguesApiRouter = require('./routes/api/leagues');
+const playersApiRouter = require('./routes/api/players');
+
 const app = express();
 mongoose.connect('mongodb://127.0.0.1:27017/footbal-app');
 
@@ -32,6 +39,12 @@ app.use('/clubs', clubsRouter);
 app.use('/coaches', coachesRouter);
 app.use('/leagues', leaguesRouter);
 app.use('/players', playersRouter);
+
+app.use('/api/agents', agentsApiRouter);
+app.use('/api/clubs', clubsApiRouter);
+app.use('/api/coaches', coachesApiRouter);
+app.use('/api/leagues', leaguesApiRouter);
+app.use('/api/players', playersApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

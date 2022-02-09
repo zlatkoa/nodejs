@@ -6,22 +6,24 @@ const League = require('../models/league');
 module.exports ={
   getAllClubs:
   async (req, res) => {
-    const Clubs = await Club.find().populate('coaches');
-    res.send({
-      error: false,
-      message: 'All Clubs from the database',
-      Clubs: Clubs
-    });
+    const clubs = await Club.find().populate('coaches');
+    res.render('clubs/index', { clubs });
+    // res.send({
+    //   error: false,
+    //   message: 'All Clubs from the database',
+    //   Clubs: Clubs
+    // });
+  },
+  
+  getCreate:
+  (req,res) => {
+    res.render('clubs/create');
   },
 
   postClubsCreate:
   async (req, res) => {
     const club = await Club.create(req.body);
-    res.send({
-      error: false,
-      message: 'New club has been created',
-      club: club
-    });
+    res.redirect('/clubs');
   },
 
   patchClubUpdate:
@@ -37,10 +39,10 @@ module.exports ={
 
   deleteClub:
   async (req, res) => {
-    await Club.findByIdAndDelete(req.params.id);
-    res.send({
-      error: false,
-      message: `Club with id #${req.params.id} has been deleted`
-    });
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No club with id: ${id}`);
+    await Player.findByIdAndDelete(req.params.id);
+    res.redirect('/clubs');
   }
 }

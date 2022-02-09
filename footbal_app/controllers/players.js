@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
-const Player = require('../models/player')
+const Player = require('../models/player');
+const Agent = require('../models/agent');
+const Club = require('../models/club')
 
 module.exports ={
   getAllPlayers:
   async (req, res) => {
-    const players = await Player.find();
-    res.send({
-      error: false,
-      message: 'All players from the database',
-      players: players
-    });
+   const players = await Player.find().populate('agent');
+   res.render('players/index', { players });
+ 
+  },
+
+  getCreate: 
+  (req, res) => {
+    res.render('players/create');
   },
 
   postPlayersCreate:
-  async (req, res) => {
+  async (req, res) => {   
     const player = await Player.create(req.body);
-    res.send({
-      error: false,
-      message: 'New player has been created',
-      player: player
-    });
+    res.redirect('/players');
   },
 
   patchPlayerUpdate:
@@ -34,11 +34,12 @@ module.exports ={
   },
 
   deletePlayer:
-  async (req, res) => {
+  async (req,res)=>{
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No player with id: ${id}`);
     await Player.findByIdAndDelete(req.params.id);
-    res.send({
-      error: false,
-      message: `Player with id #${req.params.id} has been deleted`
-    });
+    res.redirect('/players');
   }
+
 }

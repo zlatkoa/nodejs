@@ -54,8 +54,11 @@
               <td><%= player.position %></td>
               <td><%= player.birth_date %></td>
               <td><%= player.club %></td>
-              <td><%= player.agent %></td>
+              <td><%= player.agent.first_name+ ' '+player.agent.last_name %></td>
               <td>
+                <form action="/players/edit/<%= player._id %>" method="get">
+                  <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill"></i>  Edit player</button>
+                </form>
                 <form action="/players/delete/<%= player._id %>" method="post">
                   <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill"></i>  Delete player</button>
                 </form>

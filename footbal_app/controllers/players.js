@@ -16,9 +16,22 @@ module.exports ={
     res.render('players/create');
   },
 
+  getEdit: 
+  async (req, res) =>{
+    const player = await Player.findById(req.params.id);
+    res.render('players/edit' , { player });
+
+  },
+
   postPlayersCreate:
   async (req, res) => {   
     const player = await Player.create(req.body);
+    res.redirect('/players');
+  },
+
+  postEdit:
+  async (req, res) =>{
+    await Player.findByIdAndUpdate(req.params.id, req.body);
     res.redirect('/players');
   },
 

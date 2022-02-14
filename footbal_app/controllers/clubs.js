@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Club = require('../models/club');
 const Coach = require('../models/coach');
 const League = require('../models/league');
+const Player = require('../models/player');
+const Agent = require('../models/agent');
 
 module.exports ={
   getAllClubs:
@@ -20,9 +22,23 @@ module.exports ={
     res.render('clubs/create');
   },
 
+  getEdit: async (req, res) => {
+    const club = await Club.findById(req.params.id);
+    const players = await Player.find();
+    const agents = await Agent.find();
+    const leagues = await League.find();
+    const coaches = await Coach.find();
+    res.render('clubs/edit', { players, club, agents, leagues, coaches });
+  },
+
   postClubsCreate:
   async (req, res) => {
     const club = await Club.create(req.body);
+    res.redirect('/clubs');
+  },
+
+  postEdit: async (req, res) =>{
+    await Club.findByIdAndUpdate(req.params.id, req.body);
     res.redirect('/clubs');
   },
 
@@ -37,12 +53,8 @@ module.exports ={
     });
   },
 
-  deleteClub:
-  async (req, res) => {
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No club with id: ${id}`);
-    await Player.findByIdAndDelete(req.params.id);
-    res.redirect('/clubs');
+  deleteClub: async (req,res)=>{
+    await Club.findByIdAndDelete(req.params.id);
+    res.send({});
   }
 }

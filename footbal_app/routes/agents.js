@@ -5,7 +5,9 @@ const controller = require('../controllers/agents');
 // CRUD operations: Create Read Update Delete
 
 router.get('/', controller.getAllAgents)
-      //.get('/:id', controller.getAllPlayersWithId)
+      .get('/create', controller.getCreate)
+      .get('/:id', controller.getEdit)
+      .post('/edit/:id', controller.postEdit)
       .post('/', controller.postAgentsCreate)
       .patch('/:id', controller.patchAgentUpdate)
       .delete('/:id', controller.deleteAgent)

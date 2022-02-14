@@ -5,9 +5,10 @@ const controller = require('../controllers/clubs');
 
 router.get('/', controller.getAllClubs)
       .get('/create', controller.getCreate)
-      //.get('/:id', controller.getAllPlayersWithId)
+      .get('/:id', controller.getEdit)
       .post('/', controller.postClubsCreate)
+      .post('/edit/:id', controller.postEdit)
       .patch('/:id', controller.patchClubUpdate)
-      .post('/delete/:id', controller.deleteClub)
+      .delete('/:id', controller.deleteClub)
 
 module.exports = router;

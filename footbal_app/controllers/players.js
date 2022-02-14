@@ -6,37 +6,35 @@ const Club = require('../models/club')
 module.exports ={
   getAllPlayers:
   async (req, res) => {
-   const players = await Player.find().populate('agent');
+   const players = await Player.find().populate('agent').populate('club');
    res.render('players/index', { players });
  
   },
 
-  getCreate: 
-  (req, res) => {
-    res.render('players/create');
+  getCreate: async (req, res) => {
+    const agents = await Agent.find();
+    const clubs = await Club.find();
+    res.render('players/create', {agents, clubs});
   },
 
-  getEdit: 
-  async (req, res) =>{
-    const player = await Player.findById(req.params.id);
-    res.render('players/edit' , { player });
-
+  getEdit: async (req, res) => {
+    const player = await Player.findById(req.params.id).populate('club');
+    const clubs = await Club.find();
+    const agents = await Agent.find();
+    res.render('players/edit', { player, clubs, agents });
   },
 
-  postPlayersCreate:
-  async (req, res) => {   
+  postPlayersCreate: async (req, res) => {   
     const player = await Player.create(req.body);
     res.redirect('/players');
   },
 
-  postEdit:
-  async (req, res) =>{
+  postEdit: async (req, res) =>{
     await Player.findByIdAndUpdate(req.params.id, req.body);
     res.redirect('/players');
   },
 
-  patchPlayerUpdate:
-  async (req, res) => {
+  patchPlayerUpdate: async (req, res) => {
     await Player.findByIdAndUpdate(req.params.id, req.body);
     const player = await Player.findById(req.params.id);
     res.send({
@@ -46,13 +44,9 @@ module.exports ={
     });
   },
 
-  deletePlayer:
-  async (req,res)=>{
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No player with id: ${id}`);
+  deletePlayer: async (req,res)=>{
     await Player.findByIdAndDelete(req.params.id);
-    res.redirect('/players');
+    res.send({});
   }
 
 }

@@ -5,22 +5,31 @@ const Player = require('../models/player');
 module.exports ={
   getAllAgents:
   async (req, res) => {
+    const agents = await Agent.find().populate('players');
+    res.render('agents/index', { agents });
+  },
+
+  getCreate: async (req, res) => {
     const agents = await Agent.find();
-    res.send({
-      error: false,
-      message: 'All Agents from the database',
-      agents: agents
-    });
+    const players = await Player.find();
+    res.render('agents/create', {agents, players});
+  },
+
+  getEdit: async (req, res) => {
+    const agent = await Agent.findById(req.params.id).populate('players');
+    const players = await Player.find();
+    res.render('agents/edit', { agent, players });
   },
 
   postAgentsCreate:
   async (req, res) => {
     const agent = await Agent.create(req.body);
-    res.send({
-      error: false,
-      message: 'New agent has been created',
-      agent: agent
-    });
+    res.redirect('/agents');
+  },
+
+  postEdit: async (req, res) =>{
+    await Agent.findByIdAndUpdate(req.params.id, req.body);
+    res.redirect('/agents');
   },
 
   patchAgentUpdate:
@@ -34,12 +43,12 @@ module.exports ={
     });
   },
 
-  deleteAgent:
+  deleteAgent: 
   async (req, res) => {
     await Agent.findByIdAndDelete(req.params.id);
-    res.send({
-      error: false,
-      message: `Agent with id #${req.params.id} has been deleted`
-    });
+    res.send({});
   }
 }
+
+
+{/* <td><%= player.agent.first_name+ ' '+player.agent.last_name %></td> */}

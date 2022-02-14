@@ -23,6 +23,12 @@
                   <li class="nav-item">
                     <a class="nav-link" href="/leagues">Leagues</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/agents">Agents</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/coaches">Coaches</a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -50,14 +56,28 @@
               <input type="text" name="birth_date" class="form-control" id="birth_date">
             </div>
 
-            <div class="mb-3">
-              <label for="club" class="form-label">Club</label>
-              <input type="text" name="club" class="form-control" id="club">
+            <div class="form-group mb-3">
+              <label for="club">Club</label>
+              <select class="form-control" id="club" name="club">
+                <option value="">Choose a club</option>
+                  <% clubs.forEach(club => { %>
+                    <option value="<%= club._id %>">
+                      <%= club.name %>
+                    </option>                 
+                <% }); %>
+              </select>
             </div>
 
-            <div class="mb-3">
-              <label for="agent" class="form-label">Agent</label>
-              <input type="text" name="agent" class="form-control" id="agent">
+            <div class="form-group mb-3">
+              <label for="agent">Agent</label>
+              <select class="form-control" id="club" name="agent">
+                <option value="">Choose agent</option>
+                  <% agents.forEach(agent => { %>
+                    <option value="<%= agent._id %>">
+                      <%= agent.first_name+' '+agent.last_name %>
+                    </option>                 
+                <% }); %>
+              </select>
             </div>
       
             <button class="btn btn-success" type="submit">Create new Player</button>

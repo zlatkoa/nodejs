@@ -20,6 +20,12 @@ module.exports ={
     const players = await Player.find();
     res.render('agents/edit', { agent, players });
   },
+  
+  getView: async (req, res) => {
+    const agent = await Agent.findById(req.params.id).populate('players');
+    console.log(agent);
+    res.render('agents/view', { agent });
+  },
 
   postAgentsCreate:
   async (req, res) => {
@@ -50,5 +56,3 @@ module.exports ={
   }
 }
 
-
-{/* <td><%= player.agent.first_name+ ' '+player.agent.last_name %></td> */}

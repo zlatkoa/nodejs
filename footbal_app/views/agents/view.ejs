@@ -33,22 +33,17 @@
               </div>
             </div>
           </nav>
-          <h3>Create new Player in the DataBase</h3>
+          <h3>View Agent with id # <%= agent._id %></h3>
 
-          <form class="mt-5" action="/agents" method="post">
-            <div class="mb-3">
-              <label for="first_name" class="form-label">First Name</label>
-              <input type="text" name="first_name" class="form-control" id="first_name">
-            </div>
-      
-            <div class="mb-3">
-              <label for="last_name" class="form-label">Last Name</label>
-              <input type="text" name="last_name" class="form-control" id="last_name">
-            </div>
-      
-      
-            <button class="btn btn-success" type="submit">Create new Agent</button>
-          </form>
+    <a href="/agents/<%= agent._id %>/print">Generate PDF</a>
+
+    <p>Name: <%= agent.first_name+' '+agent.last_name %></p>
+    <p>Players:</p>
+    <ul>
+      <% agent.players.forEach(player => { %>
+      <li><%= `${player.first_name} ${player.last_name} (${player.position})` %></li>
+      <% }) %>
+    </ul>
           
      
 

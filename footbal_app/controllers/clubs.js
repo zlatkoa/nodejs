@@ -31,6 +31,12 @@ module.exports ={
     res.render('clubs/edit', { players, club, agents, leagues, coaches });
   },
 
+  getView:
+  async (req, res) => {
+    const club = await Club.findById(req.params.id).populate('players');
+    res.render('clubs/view', { club });
+  }, 
+
   postClubsCreate:
   async (req, res) => {
     const club = await Club.create(req.body);

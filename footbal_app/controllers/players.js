@@ -25,12 +25,63 @@ module.exports ={
   },
 
   postPlayersCreate: async (req, res) => {   
+    if (req.body.club == '') {
+      req.body.club = null;
+    }
+
     const player = await Player.create(req.body);
+
+    if (req.body.club) {
+      await Club.findByIdAndUpdate(req.body.club, {
+        $push: { players: player }
+      });
+    }
+
+    if (req.body.agent == '') {
+      req.body.agent = null;
+    }
+
+    if (req.body.agent) {
+      await Agent.findByIdAndUpdate(req.body.agent, {
+        $push: { players: player }
+      });
+    }
+
     res.redirect('/players');
   },
 
   postEdit: async (req, res) =>{
-    await Player.findByIdAndUpdate(req.params.id, req.body);
+    if (req.body.club == '') {
+      req.body.club = null;
+    }
+
+    const player = await Player.findByIdAndUpdate(req.params.id, req.body);
+
+    if (req.body.club) {
+      let foundPlayers = await Club.find({ players: player });
+
+      if (foundPlayers.length == 0) {
+        await Club.findByIdAndUpdate(req.body.club, {
+          $push: { players: player }
+        });
+      }
+    }
+
+    if (req.body.agent == '') {
+      req.body.agent = null;
+    }
+
+    if (req.body.agent) {
+      let foundPlayers = await Agent.find({ players: player });
+      console.log(foundPlayers);
+
+      if (foundPlayers.length == 0) {
+        await Agent.findByIdAndUpdate(req.body.agent, {
+          $push: { players: player }
+        });
+      }
+    }
+
     res.redirect('/players');
   },
 

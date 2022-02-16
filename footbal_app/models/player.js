@@ -18,12 +18,14 @@ const playerSchema = mongoose.Schema({
     required: true
   },
   club: {
-    type: mongoose.Types.ObjectId,
-    ref:'club'  
+    ref:'club' ,
+    type: mongoose.Types.ObjectId
+    
   },
   agent: {
-    type: mongoose.Types.ObjectId,
-    ref:'agent'  
+    ref:'agent',
+    type: mongoose.Types.ObjectId
+      
   }
 }, { timestamps: true });
 

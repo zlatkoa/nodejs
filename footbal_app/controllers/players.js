@@ -72,18 +72,30 @@ module.exports ={
     }
 
     if (req.body.agent) {
-      let foundPlayers = await Agent.find({ players: player });
-      console.log(foundPlayers);
+      let foundAgents = await Agent.find({ players: player });
+      let currentAgent = await Agent.find({players:player});
 
-      if (foundPlayers.length == 0) {
+
+      if (currentAgent.length == 0) {
+        console.log("This is the edit lenght=0 "+currentAgent);
+        await Agent.findByIdAndUpdate(req.body.agent, {
+          $push: { players: player }
+          
+        });
+      }else{
+        //await Agent.findByIdAndUpdate(req.params.id, {
+          //$pull: {players :player}
+        //});        
         await Agent.findByIdAndUpdate(req.body.agent, {
           $push: { players: player }
         });
-      }
+        console.log("This is the edit vo else"+foundAgents);
+    
     }
 
     res.redirect('/players');
-  },
+  }
+},
 
   patchPlayerUpdate: async (req, res) => {
     await Player.findByIdAndUpdate(req.params.id, req.body);

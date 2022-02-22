@@ -71,28 +71,24 @@ module.exports ={
       req.body.agent = null;
     }
 
-    if (req.body.agent) {
-      let foundAgents = await Agent.find({ players: player });
+    if (req.body.agent) {      
       let currentAgent = await Agent.find({players:player});
-
-
       if (currentAgent.length == 0) {
-        console.log("This is the edit lenght=0 "+currentAgent);
-        await Agent.findByIdAndUpdate(req.body.agent, {
-          $push: { players: player }
-          
-        });
-      }else{
-        //await Agent.findByIdAndUpdate(req.params.id, {
-          //$pull: {players :player}
-        //});        
         await Agent.findByIdAndUpdate(req.body.agent, {
           $push: { players: player }
         });
-        console.log("This is the edit vo else"+foundAgents);
-    
-    }
-
+      }
+      else{
+        const player = await Player.findById(req.params.id);
+        const updatedPlayer = await Player.findByIdAndUpdate(req.params.id, req.body);
+        await Agent.updateOne(await Agent.findById(player.club), {
+          $pull: { players: player._id },
+        });
+        await Agent.findByIdAndUpdate(req.body.agent, {
+          $push: { players: updatedPlayer },
+        });    
+      }
+      
     res.redirect('/players');
   }
 },
@@ -113,3 +109,16 @@ module.exports ={
   }
 
 }
+
+
+
+// const player = await Player.findById(req.params.id);
+//   const updatedPlayer = await Player.findByIdAndUpdate(req.params.id, req.body);
+//   await Agent.updateOne(await Agent.findById(player.club), {
+//     $pull: { players: player._id },
+//   });
+
+
+//   await Agent.findByIdAndUpdate(req.body.agent, {
+//     $push: { players: updatedPlayer },
+//   });

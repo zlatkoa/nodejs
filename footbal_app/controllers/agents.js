@@ -93,7 +93,12 @@ module.exports ={
           ]
     };
 
-    var pdfDoc =  printer.createPdfKitDocument(docDefinition);
+    var pdfDoc = printer.createPdfKitDocument(docDefinition);
+  
+    pdfDoc.pipe(fs.createWriteStream(`Report for ${agent.first_name} ${agent.last_name}.pdf`));
+    pdfDoc.end()
+    res.download(`Report for ${agent.first_name} ${agent.last_name}.pdf`);
+
 
   
     // var dataBuffer = Buffer.from(pdfDoc.toString('base64'));
@@ -112,12 +117,7 @@ module.exports ={
 
 
 
-    var pdfDoc = printer.createPdfKitDocument(docDefinition);
-  
-    pdfDoc.pipe(fs.createWriteStream(`Report for ${agent.first_name} ${agent.last_name}.pdf`));
-    pdfDoc.end()
-    res.download(`Report for ${agent.first_name} ${agent.last_name}.pdf`);
-
+    
  
   } 
 }

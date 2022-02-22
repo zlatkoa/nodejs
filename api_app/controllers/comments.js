@@ -20,7 +20,6 @@ module.exports ={
       message: `Comment with id #${comment._id}`,
       comment : comment
     });
-
   },
 
   create:

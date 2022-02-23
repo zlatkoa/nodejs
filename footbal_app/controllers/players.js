@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Player = require('../models/player');
 const Agent = require('../models/agent');
 const Club = require('../models/club')
+const nodemailer = require('nodemailer');
 
 module.exports ={
   getAllPlayers:
@@ -92,6 +93,42 @@ module.exports ={
     res.redirect('/players');
   }
 },
+  sendEmail:
+  async (req, res) =>{
+    const player = await Player.findById(req.params.id).populate('agent');
+    //let testAccount = await nodemailer.createTestAccount();
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: 'sydney.kessler31@ethereal.email',
+        pass: 'uHxsYc1EgFZ1mg3pbX'
+      }
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"Zlatko Avramovski" <zlatko@example.com>', // sender address
+      to: "bar@example.com, baz@example.com", // list of receivers
+      subject: "Email for "+player.first_name+" "+player.last_name, // Subject line
+      text: "Istiot text od HTML samo vo plain format bez tagovi", // plain text body
+      html: "<h1>Email poraka za fudbalerot "+player.first_name+" "+player.last_name+"</h1></br></br><p>"+player.first_name+" "+player.last_name+" igra na pozicija "+player.position+" roden e na "+player.birth_date+". Momentalno igra vo clubot "+player.club+" i e zastapuvan od agentot "+player.agent.first_name+" "+player.agent.last_name+"</p>", // html body
+    });
+
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+    // Preview only available when sending through an Ethereal account
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+    res.render('/players');
+
+    
+  },
 
   patchPlayerUpdate: async (req, res) => {
     await Player.findByIdAndUpdate(req.params.id, req.body);

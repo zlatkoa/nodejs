@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Player = require('../../models/player')
+const nodemailer = require('nodemailer');
+const Player = require('../../models/player');
 
 module.exports ={
   getAllPlayers:

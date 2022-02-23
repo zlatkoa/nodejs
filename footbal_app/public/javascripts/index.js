@@ -28,6 +28,16 @@ function deleteAgent(id) {
       location.reload();
     })
 }
+
+function sendEmail(id) {
+  fetch('http://localhost:3000/players/mail/' + id, {
+      method: 'POST',
+    })
+    .then(res => res.text())
+    .then(res => {
+      location.reload();
+    })
+}
   
   /**
    * 1. Imame html button

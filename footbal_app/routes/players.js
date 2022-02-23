@@ -7,8 +7,9 @@ const controller = require('../controllers/players');
 router.get('/', controller.getAllPlayers)
       .get('/create', controller.getCreate)
       .get('/:id', controller.getEdit)
-      .post('/edit/:id', controller.postEdit)
       .post('/', controller.postPlayersCreate)
+      .post('/edit/:id', controller.postEdit)
+      .post('/mail/:id', controller.sendEmail)
       .patch('/:id', controller.patchPlayerUpdate)
       .delete('/:id', controller.deletePlayer)
 

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
+const response = require('../lib/response_handler');
 
 module.exports ={
   getAllUsers:
@@ -50,5 +52,23 @@ module.exports ={
       error: false,
       message: `User with id #${req.params.id} has been deleted`
     });
+  },
+
+  register:
+  async (req, res) => {
+    try {
+      let user = await User.findOne({ email: req.body.email });
+      if (user) {
+        return response(res, 400, 'Bad request. User exists with the provided email.');
+      }
+  
+      req.body.password = bcrypt.hashSync(req.body.password);
+  
+      user = await User.create(req.body);
+  
+      response(res, 201, 'New user has been created', { user })
+    } catch (error) {
+      return response(res, 500, error.msg);
+    }
   }
 }

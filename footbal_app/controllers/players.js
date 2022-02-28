@@ -96,16 +96,15 @@ module.exports ={
   sendEmail:
   async (req, res) =>{
     const player = await Player.findById(req.params.id).populate('agent');
-    //let testAccount = await nodemailer.createTestAccount();
-
+   
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: 'sydney.kessler31@ethereal.email',
-        pass: 'uHxsYc1EgFZ1mg3pbX'
+        user: 'uriah.mertz43@ethereal.email',
+        pass: 'HkVH7eg5T6ZkveXvQx'
       }
     });
 
@@ -125,9 +124,7 @@ module.exports ={
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
-    res.render('/players');
-
-    
+    res.send({});    
   },
 
   patchPlayerUpdate: async (req, res) => {

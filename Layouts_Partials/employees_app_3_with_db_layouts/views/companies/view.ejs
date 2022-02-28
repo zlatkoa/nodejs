@@ -1,0 +1,13 @@
+<h3>View company with id #<%= company._id %></h3>
+
+<a href="/companies/<%= company._id %>/print">Generate PDF</a>
+
+<p>Name: <%= company.name %></p>
+<p>Address: <%= company.address %></p>
+<p>Employees:</p>
+<ul>
+  <% company.employees.forEach(employee => { %>
+  <li><%= `${employee.first_name} ${employee.last_name} (${employee.position})` %></li>
+  <% }) %>
+</ul>
+
